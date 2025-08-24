@@ -1,0 +1,119 @@
+<% layout('/layouts/boilerplate') %>
+
+<style>
+  .form-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  .form-title {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    color: #333;
+    text-align: center;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #444;
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: #ff385c;
+    outline: none;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+  }
+  .btn {
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+  .btn-submit {
+    background: #16a34a;
+    color: white;
+  }
+  .btn-submit:hover {
+    background: #15803d;
+  }
+  .btn-cancel {
+    background: #dc2626;
+    color: white;
+  }
+  .btn-cancel:hover {
+    background: #b91c1c;
+  }
+</style>
+
+<div class="form-container">
+  <h1 class="form-title">➕ Add New Listing</h1>
+
+  <<form action="/listing" method="POST">
+  <div class="form-group">
+    <label for="title">Listing Title</label>
+    <input type="text" id="title" name="title" placeholder="Enter property title" required />
+  </div>
+
+  <div class="form-group">
+    <label for="image">Image URL</label>
+    <input type="url" id="image" name="image" placeholder="Enter image URL" />
+  </div>
+
+  <div class="form-group">
+    <label for="location">Location</label>
+    <input type="text" id="location" name="location" placeholder="Enter city or area" required />
+  </div>
+
+  <div class="form-group">
+    <label for="country">Country</label>
+    <input type="text" id="country" name="country" placeholder="Enter country" required />
+  </div>
+
+  <div class="form-group">
+    <label for="price">Price (per night)</label>
+    <input type="number" id="price" name="price" placeholder="Enter price" min="1" required />
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea id="description" name="description" placeholder="Write a short description..." required></textarea>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-submit">✅ Add Listing</button>
+    <a href="/listing" class="btn btn-cancel">❌ Cancel</a>
+  </div>
+</form>
+
+</div>

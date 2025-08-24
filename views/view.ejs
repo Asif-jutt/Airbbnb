@@ -1,0 +1,134 @@
+<% layout('/layouts/boilerplate') %>
+
+<style>
+  .listing-container {
+    max-width: 1100px;
+    margin: 50px auto;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .listing-image {
+    width: 100%;
+    height: 450px;
+    object-fit: cover;
+  }
+
+  .listing-content {
+    padding: 30px;
+  }
+
+  .listing-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #222;
+  }
+
+  .listing-location {
+    font-size: 16px;
+    color: #717171;
+    margin-bottom: 20px;
+  }
+
+  .divider {
+    height: 1px;
+    background: #e5e5e5;
+    margin: 20px 0;
+  }
+
+  .listing-description {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #444;
+    margin-bottom: 25px;
+  }
+
+  .listing-price {
+    font-size: 22px;
+    font-weight: 600;
+    color: #FF385C;
+    margin-bottom: 30px;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .btn {
+    padding: 12px 22px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+  }
+
+  .btn-back {
+    background: #2563eb;
+    color: white;
+  }
+  .btn-back:hover {
+    background: #1d4ed8;
+  }
+
+  .btn-edit {
+    background: #f59e0b;
+    color: white;
+  }
+  .btn-edit:hover {
+    background: #d97706;
+  }
+
+  .btn-delete {
+    background: #dc2626;
+    color: white;
+  }
+  .btn-delete:hover {
+    background: #b91c1c;
+  }
+
+  .btn-add {
+    background: #16a34a;
+    color: white;
+  }
+  .btn-add:hover {
+    background: #15803d;
+  }
+</style>
+
+<div class="listing-container">
+  <img src="<%= data.image %>" alt="Listing Image" class="listing-image" />
+
+  <div class="listing-content">
+    <h1 class="listing-title"><%= data.title %></h1>
+    <p class="listing-location">📍 <%= data.location %>, <%= data.country %></p>
+
+    <div class="divider"></div>
+
+    <p class="listing-description"><%= data.description %></p>
+    <p class="listing-price">$<%= data.price %> / night</p>
+
+    <div class="actions">
+      <a href="/listing" class="btn btn-back">⬅ Back</a>
+      <a href="/listing/edit/<%= data._id %>" class="btn btn-edit">✏ Edit</a>
+      <form
+        action="/listing/delete/<%= data._id %>"
+        method="POST"
+        onsubmit="return confirm('Are you sure you want to delete this listing?')"
+      >
+        <button class="btn btn-delete">🗑 Delete</button>
+      </form>
+      <a href="/listing/new" class="btn btn-add">➕ Add New Listing</a>
+    </div>
+  </div>
+</div>

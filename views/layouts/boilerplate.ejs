@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Airbnb</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f9f9f9; }
+
+    /* Navbar */
+    .navbar { position:sticky; top:0; z-index:1000; display:flex; justify-content:space-between; align-items:center; padding:15px 40px; background:white; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+    .navbar-left img { height:32px; }
+    .navbar-center { display:flex; gap:25px; align-items:center; }
+    .navbar-center a { text-decoration:none; color:#333; font-size:15px; font-weight:500; }
+    .navbar-center a:hover { color:#FF385C; }
+    .navbar-right { display:flex; gap:20px; align-items:center; font-size:14px; }
+
+    /* Banner */
+    .banner {
+      position: relative;
+      height: 75vh;
+      background: url("https://images.unsplash.com/photo-1501117716987-c8e1ecb2101f?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+    }
+    .banner-overlay {
+      position: absolute;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.45);
+    }
+    .banner-content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      padding: 20px;
+    }
+    .banner-content h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+    .banner-content p {
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
+    .banner-content a {
+      padding: 14px 25px;
+      background: #FF385C;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .banner-content a:hover {
+      background: #e31c5f;
+    }
+
+    /* Footer */
+    .footer {
+      background: #222;
+      color: #ddd;
+      padding: 30px 20px;
+      margin-top: 50px;
+    }
+    .footer-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .footer-info p {
+      margin: 5px 0;
+    }
+    .footer-social {
+      text-align: right;
+    }
+    .footer-social h4 {
+      margin-bottom: 10px;
+      color: #fff;
+    }
+    .social-icon {
+      font-size: 22px;
+      margin: 0 8px;
+      color: #ddd;
+      transition: 0.3s;
+    }
+    .social-icon:hover {
+      color: #1da1f2;
+    }
+    
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="/listing">
+      <div class="navbar-left">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_B%C3%A9lo.svg" alt="Airbnb Logo">
+    </div>
+  </a>
+    <div class="navbar-center">
+      <a href="http://localhost:8080/listing">Homes</a>
+      <a href="/experiences">Experiences</a>
+      <a href="/services">Services</a>
+    </div>
+    <div class="navbar-right">
+      <a href="#">Become a host</a>
+      <span>🌐</span>
+      <span>☰</span>
+    </div>
+  </div>
+
+
+
+  <!-- Page Content -->
+  <%- body %>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Airbnb Clone | All rights reserved.</p>
+        <p><strong>Email:</strong> asifhussain5115@gmail.com</p>
+        <p><strong>Location:</strong> Lahore, Pakistan</p>
+      </div>
+
+      <div class="footer-social">
+        <h4>Login with</h4>
+        <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-google"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+<% layout('/layouts/boilerplate') %>
+
+<style>
+  .form-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+  .form-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    color: #1e293b;
+    text-align: center;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #334155;
+  }
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: #2563eb;
+    outline: none;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+  }
+  .btn {
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-update {
+    background: #2563eb;
+    color: white;
+  }
+  .btn-update:hover {
+    background: #1d4ed8;
+  }
+  .btn-cancel {
+    background: #dc2626;
+    color: white;
+  }
+  .btn-cancel:hover {
+    background: #b91c1c;
+  }
+  .preview {
+    margin-top: 20px;
+    text-align: center;
+  }
+  .preview img {
+    max-width: 300px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+</style>
+
+<div class="form-container">
+  <h1 class="form-title">✏️ Edit Listing</h1>
+
+  <form action="/listing/edit/<%= data._id %>" method="POST">
+    <div class="form-group">
+      <label for="title">Listing Title</label>
+      <input type="text" id="title" name="title" value="<%= data.title %>" required />
+    </div>
+
+    <div class="form-group">
+      <label for="image">Image URL</label>
+      <input type="url" id="image" name="image" value="<%= data.image %>" />
+    </div>
+
+    <div class="preview">
+      <p>Current Image:</p>
+      <img src="<%= data.image %>" alt="<%= data.title %>">
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input type="text" id="location" name="location" value="<%= data.location %>" required />
+    </div>
+
+    <div class="form-group">
+      <label for="country">Country</label>
+      <input type="text" id="country" name="country" value="<%= data.country %>" required />
+    </div>
+
+    <div class="form-group">
+      <label for="price">Price (per night)</label>
+      <input type="number" id="price" name="price" value="<%= data.price %>" min="1" required />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" required><%= data.description %></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-update">💾 Update Listing</button>
+      <a href="/listing" class="btn btn-cancel">❌ Cancel</a>
+    </div>
+  </form>
+</div>

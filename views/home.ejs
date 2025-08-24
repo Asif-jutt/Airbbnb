@@ -1,0 +1,111 @@
+<% layout('/layouts/boilerplate') %>
+
+<style>
+  /* Search Bar */
+  .search-bar { background:white; border-radius:40px; padding:12px 25px; margin:20px auto; max-width:900px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
+  .search-bar div { font-size:14px; font-weight:500; cursor:pointer; }
+  .search-bar small { font-weight:normal; color:#666; }
+  .search-btn { background:#FF385C; color:white; border:none; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+
+  /* Listings */
+  .listings { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:25px; padding:40px; max-width:1200px; margin:auto; }
+  .card { background:white; border-radius:15px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.2s ease; }
+  .card:hover { transform:scale(1.03); }
+  .card img { width:100%; height:200px; object-fit:cover; }
+  .card-body { padding:15px; }
+  .card-body h3 { margin:0 0 8px; font-size:16px; }
+  .card-body p { margin:0; font-size:14px; color:#555; }
+  .price { font-weight:bold; margin-top:10px; color:#FF385C; }
+  .card-link { text-decoration:none; color:inherit; display:block; }
+  .card-link:hover { color:inherit; }
+  .hero-banner {
+  position: relative;
+  height: 75vh;
+  background: url("https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
+}
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: white;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.hero-content h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+.hero-content p {
+  font-size: 18px;
+  margin-bottom: 25px;
+}
+.hero-content .btn {
+  padding: 14px 25px;
+  background: #FF385C;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+}
+.hero-content .btn:hover {
+  background: #e31c5f;
+}
+</style>
+
+<!-- Search Bar -->
+<form class="search-bar" action="/listing/search" method="POST"
+  style="display: flex; gap: 15px; align-items: center; background: #fff; padding: 12px 18px; border-radius: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-family: sans-serif;">
+  
+  <div style="flex: 1;">
+    <label style="font-size: 12px; font-weight: 600; color: #555;">Where</label><br>
+    <input type="text" name="country" placeholder="Search by country" 
+      style="border: none; outline: none; font-size: 14px; width: 100%; padding: 4px;" required>
+  </div>
+
+  <div style="flex: 1;">
+    Check in<br><small>Add dates</small>
+  </div>
+
+  <div style="flex: 1;">
+    Check out<br><small>Add dates</small>
+  </div>
+
+  <div style="flex: 1;">
+    Who<br><small>Add guests</small>
+  </div>
+
+  <button class="search-btn" 
+    style="background: #ff385c; border: none; color: white; font-size: 16px; padding: 10px 16px; border-radius: 50%; cursor: pointer;" 
+    type="submit">🔍</button>
+</form>
+
+ <!-- In your layout file (e.g., boilerplate.ejs) -->
+<section class="hero-banner">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1>Welcome to Your Home Away from Home</h1>
+    <p>Find dreamy stays around the world.</p>
+    <a href="/listing" class="btn">Explore Listings</a>
+  </div>
+</section>
+<!-- Property Listings -->
+<div class="listings">
+  <% data.forEach(list => { %>
+    <a href="/listing/view/<%= list._id %>" class="card-link">
+      <div class="card">
+        <img src="<%= list.image %>" alt="Property Image">
+        <div class="card-body">
+          <h3><%= list.title %></h3>
+          <p><%= list.location %>, <%= list.country %></p>
+          <p><%= list.description %></p>
+          <p class="price">$<%= list.price %> / night</p>
+        </div>
+      </div>
+    </a>
+  <% }) %>
+</div>
