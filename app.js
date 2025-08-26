@@ -1,62 +1,71 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const engine = require("ejs-mate");
-const Listing = require("./models/listing.js");
+const express = require('express');
+const mongoose = require('mongoose');
+const engine = require('ejs-mate');
+const Listing = require('./models/listing.js');
+const ExpressError = require('./ExpressError');
 const app = express();
-app.set("view engine", "ejs");
-app.engine("ejs", engine);
+app.set('view engine', 'ejs');
+app.engine('ejs', engine);
 app.use(express.urlencoded({ extended: true }));
 // initilize database
-main().then(() => {
-  console.log("Connection is build..");
-}).catch (err=> {
-  throw err;
-})
+main()
+  .then(() => {
+    console.log('http://localhost:8080/listing');
+  })
+  .catch((err) => {
+    throw err;
+  });
 async function main() {
-  await mongoose.connect("mongodb://localhost:27017/test");
+  await mongoose.connect('mongodb://localhost:27017/test');
 }
 
 app.listen(8080, () => {
-  console.log("Server is running ..");
-})
+  console.log('Server is running ..');
+});
 
+// middle ware for listing
+// Async Wrap
+function Asysnwrap(fn) {
+  return function (req, res, next) {
+    fn(req, res, next).catch((err) => next(err));
+  };
+}
 // all listing show
-app.get("/listing",async (req, res) => {
-  const lists = await Listing.find({});
-  res.render("home.ejs", { data: lists });
-})
-
-// view individual list
-app.get("/listing/view/:id", async (req, res) => {
+app.get('/listing', async (req, res, next) => {
   try {
-    let { id } = req.params;
-    const list1 = await Listing.findById(id);
-    if (!list1) {
-      return res.status(404).send("Listing not found");
-    }
-    res.render("view", { data: list1 });
+    const lists = await Listing.find({});
+    res.render('home.ejs', { data: lists });
   } catch (err) {
-    console.log(err);
-    res.status(500).send("Server error");
+    next(new ExpressError(403, 'Data not found'));
   }
 });
 
+// view individual list
+app.get(
+  '/listing/view/:id',
+  Asysnwrap(async (req, res, next) => {
+    let { id } = req.params;
+    const list1 = await Listing.findById(id);
+    res.render('view', { data: list1 });
+  })
+);
+
 // add new list
-app.get("/listing/new", (req, res) => {
-  res.render("add.ejs");
+app.get('/listing/new', (req, res) => {
+  res.render('add.ejs');
 });
 
-app.post("/listing", async (req, res) => {
-  try {
+app.post(
+  '/listing',
+  Asysnwrap(async (req, res, next) => {
     const user1 = new Listing({
       title: req.body.title,
       description: req.body.description,
       image: req.body.image,
-      price: Number(req.body.price),
+      price: req.body.price,
       location: req.body.location,
-      country: req.body.country
+      country: req.body.country,
     });
-
     await user1.save();
 
     res.send(`
@@ -127,23 +136,32 @@ app.post("/listing", async (req, res) => {
     </body>
   </html>
 `);
+  })
+);
+// edit lists by get
+app.get(
+  '/listing/edit/:id',
+  Asysnwrap(async (req, res, next) => {
+    const { id } = req.params;
 
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("❌ Error saving listing");
-  }
-});
-// edit lists by get 
-app.get("/listing/edit/:id", async(req, res) => {
-  const { id } = req.params;
-  const list = await Listing.findById(id);
-  res.render("edit", { data: list });
-});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new ExpressError(400, 'Invalid ID format');
+    }
 
-app.post("/listing/edit/:id", async (req, res) => {
-  const { id } = req.params;
-  await Listing.updateOne({ _id: id }, req.body).then((result) => {
-    res.send(`
+    const list = await Listing.findById(id);
+    if (!list) {
+      next(new ExpressError(err));
+    }
+    res.render('edit', { data: list });
+  })
+);
+
+app.post(
+  '/listing/edit/:id',
+  Asysnwrap(async (req, res) => {
+    const { id } = req.params;
+    await Listing.updateOne({ _id: id }, req.body).then((result) => {
+      res.send(`
   <html>
     <head>
       <style>
@@ -200,33 +218,36 @@ app.post("/listing/edit/:id", async (req, res) => {
   </html>
 `);
 
-    console.log(result);
-  }).catch(err => {
-    console.log("error occure");
-  });
-});
+      console.log(result);
+    });
+  })
+);
 
 // Deleting the list
-app.post("/listing/delete/:id", async(req, res) => {
-  try {
+app.post(
+  '/listing/delete/:id',
+  Asysnwrap(async (req, res) => {
     const { id } = req.params;
     await Listing.deleteOne({ _id: id }).then((result) => {
       console.log(result);
-      res.redirect("/listing");
-    })
-  } catch (err) {
-    console.log(err);
-  }
-  
-})
+      res.redirect('/listing');
+    });
+  })
+);
 // search the lists by country
-app.post("/listing/search", async (req, res) => {
-  try {
+app.post(
+  '/listing/search',
+  Asysnwrap(async (req, res) => {
     const { country } = req.body;
-    const list = await Listing.find({ country: { $regex: country, $options: "i" } }); // case-insensitive search
-    res.render("search", { data: list, searchCountry: country });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("Server Error");
-  }
+    const list = await Listing.find({
+      country: { $regex: country, $options: 'i' },
+    }); // case-insensitive search
+    res.render('search', { data: list, searchCountry: country });
+  })
+);
+// Error Handler
+app.use((err, req, res, next) => {
+  let { status = 401, message = 'Data not found' } = err;
+  res.status(status).send(message);
+  next(err);
 });
