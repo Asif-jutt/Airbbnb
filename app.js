@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const engine = require('ejs-mate');
 const Listing = require('./models/listing.js');
 const ExpressError = require('./ExpressError');
+const { upresponse, insertresponse, defaultresponse } = require('./modulo');
 const app = express();
 app.set('view engine', 'ejs');
 app.engine('ejs', engine);
@@ -68,74 +69,7 @@ app.post(
     });
     await user1.save();
 
-    res.send(`
-  <html>
-    <head>
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-          margin: 0;
-          background: #f8f8f8;
-        }
-        .notification-card {
-          background: #fff;
-          padding: 20px 30px;
-          border-radius: 12px;
-          box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-          text-align: center;
-          position: relative;
-          width: 320px;
-          animation: fadeIn 0.4s ease-in-out;
-        }
-        .notification-card h2 {
-          color: #2ecc71;
-          margin: 0 0 10px;
-        }
-        .notification-card p {
-          color: #555;
-          font-size: 14px;
-          margin: 0;
-        }
-        .close-btn {
-          position: absolute;
-          top: 10px;
-          right: 15px;
-          background: none;
-          border: none;
-          font-size: 18px;
-          cursor: pointer;
-          color: #888;
-        }
-        .close-btn:hover {
-          color: #e74c3c;
-        }
-        @keyframes fadeIn {
-          from {opacity: 0; transform: translateY(-10px);}
-          to {opacity: 1; transform: translateY(0);}
-        }
-      </style>
-    </head>
-    <body>
-      <div class="notification-card">
-        <button class="close-btn" onclick="redirectNow()">✖</button>
-        <h2>✅ Success!</h2>
-        <p>New product added successfully.</p>
-      </div>
-
-      <script>
-        function redirectNow() {
-          window.location.href = '/listing';
-        }
-        // Auto redirect after 2.5 seconds
-        setTimeout(redirectNow, 50000);
-      </script>
-    </body>
-  </html>
-`);
+    res.send(insertresponse);
   })
 );
 // edit lists by get
@@ -161,62 +95,7 @@ app.post(
   Asysnwrap(async (req, res) => {
     const { id } = req.params;
     await Listing.updateOne({ _id: id }, req.body).then((result) => {
-      res.send(`
-  <html>
-    <head>
-      <style>
-        body {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-          margin: 0;
-          background: #f9f9f9;
-          font-family: Arial, sans-serif;
-        }
-        .card {
-          background: #fff;
-          padding: 20px 30px;
-          border-radius: 12px;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-          text-align: center;
-          position: relative;
-          width: 350px;
-        }
-        .card h2 {
-          color: #2ecc71;
-          margin: 0;
-          font-size: 20px;
-        }
-        .close-btn {
-          position: absolute;
-          top: 10px;
-          right: 15px;
-          font-size: 18px;
-          cursor: pointer;
-          color: #888;
-        }
-        .close-btn:hover {
-          color: #000;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="card">
-        <span class="close-btn" onclick="redirectNow()">❌</span>
-        <h2>✅ Product Updated Successfully!</h2>
-        <p>You will be redirected shortly...</p>
-      </div>
-
-      <script>
-        function redirectNow(){
-          window.location='/listing';
-        }
-        setTimeout(redirectNow, 5000);
-      </script>
-    </body>
-  </html>
-`);
+      res.send(upresponse);
 
       console.log(result);
     });
@@ -245,9 +124,13 @@ app.post(
     res.render('search', { data: list, searchCountry: country });
   })
 );
+// page not found handler
+app.use((req, res) => {
+  res.send(defaultresponse);
+});
 // Error Handler
 app.use((err, req, res, next) => {
-  let { status = 401, message = 'Data not found' } = err;
+  let { status = 401, message = 'page not found' } = err;
   res.status(status).send(message);
   next(err);
 });
