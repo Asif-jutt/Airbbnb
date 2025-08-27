@@ -28,7 +28,9 @@ app.listen(8080, () => {
 // Async Wrap
 function Asysnwrap(fn) {
   return function (req, res, next) {
-    fn(req, res, next).catch((err) => next(err));
+    fn(req, res, next).catch((err) =>
+      next(new ExpressError(402, 'Something Went Wrong'))
+    );
   };
 }
 // all listing show

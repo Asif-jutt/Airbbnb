@@ -1,4 +1,8 @@
 <% layout('/layouts/boilerplate') %>
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
 
 <style>
   .form-container {
@@ -16,32 +20,6 @@
     color: #333;
     text-align: center;
   }
-  .form-group {
-    margin-bottom: 20px;
-  }
-  .form-group label {
-    display: block;
-    font-size: 15px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #444;
-  }
-  .form-group input,
-  .form-group textarea,
-  .form-group select {
-    width: 100%;
-    padding: 12px 15px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    transition: border-color 0.2s ease;
-  }
-  .form-group input:focus,
-  .form-group textarea:focus,
-  .form-group select:focus {
-    border-color: #ff385c;
-    outline: none;
-  }
   textarea {
     resize: vertical;
     min-height: 120px;
@@ -51,69 +29,165 @@
     justify-content: space-between;
     margin-top: 25px;
   }
-  .btn {
-    padding: 12px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s ease;
+  /* Green tick inside input */
+  .form-control.is-valid {
+    border-color: #198754 !important;
+    padding-right: 2.5rem !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23198754'%3e%3cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M5 13l4 4L19 7'/%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 1.5rem 1.5rem !important;
   }
-  .btn-submit {
-    background: #16a34a;
-    color: white;
-  }
-  .btn-submit:hover {
-    background: #15803d;
-  }
-  .btn-cancel {
-    background: #dc2626;
-    color: white;
-  }
-  .btn-cancel:hover {
-    background: #b91c1c;
+
+  /* Red cross inside input */
+  .form-control.is-invalid {
+    border-color: #dc3545 !important;
+    padding-right: 2.5rem !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23dc3545'%3e%3cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 18L18 6M6 6l12 12'/%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 1.5rem 1.5rem !important;
   }
 </style>
 
 <div class="form-container">
   <h1 class="form-title">➕ Add New Listing</h1>
 
-  <<form action="/listing" method="POST">
-  <div class="form-group">
-    <label for="title">Listing Title</label>
-    <input type="text" id="title" name="title" placeholder="Enter property title" required />
-  </div>
+  <form
+    action="/listing"
+    method="POST"
+    class="row g-3 needs-validation"
+    novalidate
+  >
+    <!-- Title -->
+    <div class="col-md-12">
+      <label for="title" class="form-label">Listing Title</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        placeholder="Enter property title"
+        class="form-control"
+        required
+      />
+      <div class="valid-feedback">Looks good!</div>
+      <div class="invalid-feedback">Title is required.</div>
+    </div>
 
-  <div class="form-group">
-    <label for="image">Image URL</label>
-    <input type="url" id="image" name="image" placeholder="Enter image URL" />
-  </div>
+    <!-- Image -->
+    <div class="col-md-12">
+      <label for="image" class="form-label">Image URL</label>
+      <input
+        type="url"
+        id="image"
+        name="image"
+        placeholder="Enter image URL"
+        class="form-control"
+      />
+      <div class="valid-feedback">URL looks good!</div>
+      <div class="invalid-feedback">Invalid URL format.</div>
+    </div>
 
-  <div class="form-group">
-    <label for="location">Location</label>
-    <input type="text" id="location" name="location" placeholder="Enter city or area" required />
-  </div>
+    <!-- Location -->
+    <div class="col-md-12">
+      <label for="location" class="form-label">Location</label>
+      <input
+        type="text"
+        id="location"
+        name="location"
+        placeholder="Enter city or area"
+        class="form-control"
+        required
+      />
+      <div class="valid-feedback">Looks good!</div>
+      <div class="invalid-feedback">Location is required.</div>
+    </div>
 
-  <div class="form-group">
-    <label for="country">Country</label>
-    <input type="text" id="country" name="country" placeholder="Enter country" required />
-  </div>
+    <!-- Country -->
+    <div class="col-md-12">
+      <label for="country" class="form-label">Country</label>
+      <input
+        type="text"
+        id="country"
+        name="country"
+        placeholder="Enter country"
+        class="form-control"
+        required
+      />
+      <div class="valid-feedback">Looks good!</div>
+      <div class="invalid-feedback">Country is required.</div>
+    </div>
 
-  <div class="form-group">
-    <label for="price">Price (per night)</label>
-    <input type="number" id="price" name="price" placeholder="Enter price" min="1" required />
-  </div>
+    <!-- Price -->
+    <div class="col-md-12">
+      <label for="price" class="form-label">Price (per night)</label>
+      <input
+        type="number"
+        id="price"
+        name="price"
+        placeholder="Enter price"
+        min="1"
+        class="form-control"
+        required
+      />
+      <div class="valid-feedback">Looks good!</div>
+      <div class="invalid-feedback">Price must be greater than 0.</div>
+    </div>
 
-  <div class="form-group">
-    <label for="description">Description</label>
-    <textarea id="description" name="description" placeholder="Write a short description..." required></textarea>
-  </div>
+    <!-- Description -->
+    <div class="col-md-12">
+      <label for="description" class="form-label">Description</label>
+      <textarea
+        id="description"
+        name="description"
+        placeholder="Write a short description..."
+        class="form-control"
+        required
+      ></textarea>
+      <div class="valid-feedback">Looks good!</div>
+      <div class="invalid-feedback">Description is required.</div>
+    </div>
 
-  <div class="form-actions">
-    <button type="submit" class="btn btn-submit">✅ Add Listing</button>
-    <a href="/listing" class="btn btn-cancel">❌ Cancel</a>
-  </div>
-</form>
-
+    <!-- Actions -->
+    <div class="form-actions">
+      <button type="submit" class="btn btn-success">✅ Add Listing</button>
+      <a href="/listing" class="btn btn-danger">❌ Cancel</a>
+    </div>
+  </form>
 </div>
+
+<script>
+  (() => {
+    'use strict';
+    const forms = document.querySelectorAll('.needs-validation');
+
+    Array.from(forms).forEach((form) => {
+      // validate on submit
+      form.addEventListener(
+        'submit',
+        (event) => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        },
+        false
+      );
+
+      // live validation
+      const inputs = form.querySelectorAll('input, textarea');
+      inputs.forEach((input) => {
+        input.addEventListener('input', () => {
+          if (input.checkValidity()) {
+            input.classList.remove('is-invalid');
+            input.classList.add('is-valid');
+          } else {
+            input.classList.remove('is-valid');
+            input.classList.add('is-invalid');
+          }
+        });
+      });
+    });
+  })();
+</script>
