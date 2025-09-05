@@ -1,12 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const engine = require('ejs-mate');
+require("dotenv").config();
 const Listing = require('./models/listing.js');
 const ExpressError = require('./ExpressError');
 const { upresponse, insertresponse, defaultresponse } = require('./modulo');
 const app = express();
 app.set('view engine', 'ejs');
 app.engine('ejs', engine);
+const PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 // initilize database
 main()
@@ -17,10 +19,10 @@ main()
     throw err;
   });
 async function main() {
-  await mongoose.connect('mongodb://localhost:27017/test');
+  await mongoose.connect(process.env.MONGO_URI);
 }
 
-app.listen(8080, () => {
+app.listen(PORT, () => {
   console.log('Server is running ..');
 });
 
